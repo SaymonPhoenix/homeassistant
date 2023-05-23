@@ -1,0 +1,564 @@
+- id: Вызов меню управления
+  alias: telegram_menu_start
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: telegram_command
+      event_data:
+        command: '/start'
+    - platform: event
+      event_type: telegram_command
+      event_data:
+        command: '/start@CatCheshire_bot'
+  action:
+    - service: telegram_bot.send_message
+      data: &telegram_menu
+        target: "{{ trigger.event.data.user_id }}"
+        message: |
+          {{'\U0001F527'}} *ВЫБЕРИ ПОМЕЩЕНИЕ ДЛЯ УПРАВЛЕНИЯ:*
+        inline_keyboard:
+          - '{{''\U0001F463''}} Коридор:/corridor , {{''\U0001F6BF''}} Душ:/shower'
+          - '{{''\U0001F37D''}} Кухня:/kitchen , {{''\U0001F6CB''}} Гостиная:/living_room'
+          - '{{''\U0001F6CF''}} Спальня:/bedroom , {{''\U0001FA9F''}} Лоджия:/loggia'
+          - '{{''\U0001F37C''}} Детская:/nursery , {{''\U0001F6C1''}} Ванна:/bathroom'
+          - '{{''\U0001F6A8''}} Охрана квартиры - {% if is_state(''binary_sensor.protection_all'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/protection_toggle'
+          - '{{''\U0001F6AB''}} Убрать меню:/menu_hide , {{''\U0001F6D1''}} НЕ НАЖИМАТЬ:/do_not_press'
+- id: Главное меню управления
+  alias: telegram_menu
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data: {}
+  action:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/corridor'' }}'
+          sequence:
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: telegram_bot.send_message
+              data:
+                target: "{{ trigger.event.data.user_id }}"
+                message: |
+                  {{'\U0001F39B'}} Датчики:
+                           {{'\U0001F6AA'}} {% if is_state('binary_sensor.corridor_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
+                           {{'\U0001F321'}} {{ states('sensor.corridor_temperature_humidity_luminosity_temperature') }}°C
+                           {{'\U0001F4A7'}} {{ states('sensor.corridor_temperature_humidity_luminosity_humidity') }}%
+                           {{'\U00002600'}} {{ states('sensor.corridor_temperature_humidity_luminosity_illuminance_lux') }}lux
+                  {{'\U0001F527'}} *УПРАВЛЕНИЕ КОРИДОРОМ:*
+                inline_keyboard:
+                  - '{{''\U0001F6A8''}} Охрана коридора - {% if is_state(''binary_sensor.protection_corridor'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/protection_corridor_toggle'
+                  - '{{''\U000021A9''}} Вернуться назад:/menu_back'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/shower'' }}'
+          sequence:
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: telegram_bot.send_message
+              data:
+                target: "{{ trigger.event.data.user_id }}"
+                message: |
+                  {{'\U0001F527'}} *УПРАВЛЕНИЕ ДУШЕВОЙ:*
+                inline_keyboard:
+                  - '{{''\U000021A9''}} Вернуться назад:/menu_back'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/kitchen'' }}'
+          sequence:
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: telegram_bot.send_message
+              data:
+                target: "{{ trigger.event.data.user_id }}"
+                message: |
+                  {{'\U0001F39B'}} Датчики:
+                           {{'\U0001F4A6'}} {% if is_state('binary_sensor.kitchen_battery_leak_water_leak', 'on') -%} Мокро {%- else -%} Сухо {%- endif %}
+                  {{'\U0001F527'}} *УПРАВЛЕНИЕ КУХНЕЙ:*
+                inline_keyboard:
+                  - '{{''\U000021A9''}} Вернуться назад:/menu_back'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/living_room'' }}'
+          sequence:
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: telegram_bot.send_message
+              data:
+                target: "{{ trigger.event.data.user_id }}"
+                message: |
+                  {{'\U0001F39B'}} Датчики:
+                           {{'\U0001F4A6'}} {% if is_state('binary_sensor.living_room_battery_leak_water_leak', 'on') -%} Мокро {%- else -%} Сухо {%- endif %}
+                  {{'\U0001F527'}} *УПРАВЛЕНИЕ ГОСТИНОЙ:*
+                inline_keyboard:
+                  - '{{''\U000021A9''}} Вернуться назад:/menu_back'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/bedroom'' }}'
+          sequence:
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: telegram_bot.send_message
+              data: &telegram_menu_bedroom
+                target: "{{ trigger.event.data.user_id }}"
+                message: |
+                  {{'\U0001F39B'}} Датчики:
+                           {{'\U0001F6AA'}} {% if is_state('binary_sensor.bedroom_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
+                           {{'\U0001F321'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_temperature') }}°C
+                           {{'\U0001F4A7'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_humidity') }}%
+                           {{'\U00002600'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_illuminance_lux') }}lux
+                  {{'\U0001F527'}} *УПРАВЛЕНИЕ СПАЛЬНЕЙ:*
+                inline_keyboard:
+                  - '{{''\U0001F4A7''}} Увлажнитель:/bedroom/humidifier'
+                  - '{{''\U0001F6A8''}} Охрана спальни - {% if is_state(''binary_sensor.protection_bedroom'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/protection_bedroom_toggle'
+                  - '{{''\U000021A9''}} Вернуться назад:/menu_back'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/loggia'' }}'
+          sequence:
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: telegram_bot.send_message
+              data:
+                target: "{{ trigger.event.data.user_id }}"
+                message: |
+                  {{'\U0001F527'}} *УПРАВЛЕНИЕ ЛОДЖИЕЙ:*
+                inline_keyboard:
+                  - '{{''\U000021A9''}} Вернуться назад:/menu_back'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/nursery'' }}'
+          sequence:
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: telegram_bot.send_message
+              data:
+                target: "{{ trigger.event.data.user_id }}"
+                message: |
+                  {{'\U0001F39B'}} Датчики:
+                           {{'\U0001F6AA'}} {% if is_state('binary_sensor.nursery_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
+                  {{'\U0001F527'}} *УПРАВЛЕНИЕ ДЕТСКОЙ:*
+                inline_keyboard:
+                  - '{{''\U0001F6A8''}} Охрана детской - {% if is_state(''binary_sensor.protection_nursery'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/protection_nursery_toggle'
+                  - '{{''\U000021A9''}} Вернуться назад:/menu_back'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/bathroom'' }}'
+          sequence:
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: telegram_bot.send_message
+              data:
+                target: "{{ trigger.event.data.user_id }}"
+                message: |
+                  {{'\U0001F527'}} *УПРАВЛЕНИЕ ВАННОЙ:*
+                inline_keyboard:
+                  - '{{''\U000021A9''}} Вернуться назад:/menu_back'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/protection_toggle'' }}'
+          sequence:
+            - service: mqtt.publish
+              data_template:
+                topic: 'protection/all'
+                payload_template: "{%- if is_state('binary_sensor.protection_all', 'on') -%} off {%- else -%} on {%- endif -%}"
+                retain: true
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F6A8'}} Охрана квартиры {% if is_state('binary_sensor.protection_all', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: notify.wonderland
+              data:
+                message: |
+                  {{'\U0001F6A8'}} Охрана квартиры {% if is_state('binary_sensor.protection_all', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/menu_hide'' }}'
+          sequence:
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/do_not_press'' }}'
+          sequence:
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: telegram_bot.send_photo
+              data:
+                target: "{{ trigger.event.data.user_id }}"
+                url: 'https://www.meme-arsenal.com/memes/86c60fbd3c092bc6037c4febca84a236.jpg'
+- id: Меню управления коридором
+  alias: telegram_menu_corridor
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data: {}
+  action:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/protection_corridor_toggle'' }}'
+          sequence:
+            - service: mqtt.publish
+              data_template:
+                topic: 'protection/corridor'
+                payload_template: "{%- if is_state('binary_sensor.protection_corridor', 'on') -%} off {%- else -%} on {%- endif -%}"
+                retain: true
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F6A8'}} Охрана коридора {% if is_state('binary_sensor.protection_corridor', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: notify.wonderland
+              data:
+                message: |
+                  {{'\U0001F6A8'}} Охрана коридора {% if is_state('binary_sensor.protection_corridor', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+- id: Меню управления спальней
+  alias: telegram_menu_bedroom
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data: {}
+  action:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/bedroom/humidifier'' }}'
+          sequence:
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: telegram_bot.send_message
+              data:
+                target: "{{ trigger.event.data.user_id }}"
+                message: |
+                  {{'\U0001F39B'}} Датчики:
+                           {{'\U0001F6B0'}} Уровень воды - {{ states('sensor.uvlazhnitel_water_level') }}%
+                           {{'\U0001F4A8'}} Выбранный режим работы - {{ state_attr('humidifier.uvlazhnitel', 'mode') }}
+                  {{'\U0001F527'}} *УПРАВЛЕНИЕ УВЛАЖНИТЕЛЕМ ВОЗДУХА:*
+                inline_keyboard:
+                  - '{{''\U0001F4A7''}} Увлажнитель - {% if is_state(''humidifier.uvlazhnitel'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/humidifier_toggle'
+                  - '{% if is_state_attr(''humidifier.uvlazhnitel'', ''mode'', ''Auto'') -%} {{''\U00002196''}} Low:/bedroom/humidifier_low , {{''\U00002B06''}} Mid:/bedroom/humidifier_mid , {{''\U00002197''}} High:/bedroom/humidifier_high {%- elif is_state_attr(''humidifier.uvlazhnitel'', ''mode'', ''Low'') -%} {{''\U0001F170''}} Auto:/bedroom/humidifier_auto , {{''\U00002B06''}} Mid:/bedroom/humidifier_mid , {{''\U00002197''}} High:/bedroom/humidifier_high {%- elif is_state_attr(''humidifier.uvlazhnitel'', ''mode'', ''Mid'') -%} {{''\U0001F170''}} Auto:/bedroom/humidifier_auto , {{''\U00002196''}} Low:/bedroom/humidifier_low , {{''\U00002197''}} High:/bedroom/humidifier_high {%- else -%} {{''\U0001F170''}} Auto:/bedroom/humidifier_auto , {{''\U00002196''}} Low:/bedroom/humidifier_low , {{''\U00002B06''}} Mid:/bedroom/humidifier_mid {%- endif %}'
+                  - '{{''\U000021A9''}} Вернуться назад:/menu_back_bedroom'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/protection_bedroom_toggle'' }}'
+          sequence:
+            - service: mqtt.publish
+              data_template:
+                topic: 'protection/bedroom'
+                payload_template: "{%- if is_state('binary_sensor.protection_bedroom', 'on') -%} off {%- else -%} on {%- endif -%}"
+                retain: true
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F6A8'}} Охрана спальни {% if is_state('binary_sensor.protection_bedroom', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: notify.wonderland
+              data:
+                message: |
+                  {{'\U0001F6A8'}} Охрана спальни {% if is_state('binary_sensor.protection_corridor', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+- id: Меню управления увлажнителем в спальне
+  alias: telegram_menu_bedroom_humidifier
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data: {}
+  action:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/bedroom/humidifier_toggle'' }}'
+          sequence:
+            - service: humidifier.toggle
+              entity_id: humidifier.uvlazhnitel
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F4A7'}} Увлажнитель {% if is_state('humidifier.uvlazhnitel', 'on') -%} включён {{'\U0001F7E2'}} {%- else -%} выключен {{'\U0001F534'}} {%- endif %}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/bedroom/humidifier_low'' }}'
+          sequence:
+            - service: humidifier.set_mode
+              entity_id: humidifier.uvlazhnitel
+              data:
+                mode: Low
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F4A7'}} Увлажнитель переведён в режим работы Low {{'\U00002196'}}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/bedroom/humidifier_mid'' }}'
+          sequence:
+            - service: humidifier.set_mode
+              entity_id: humidifier.uvlazhnitel
+              data:
+                mode: Mid
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F4A7'}} Увлажнитель переведён в режим работы Mid {{'\U00002B06'}}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/bedroom/humidifier_high'' }}'
+          sequence:
+            - service: humidifier.set_mode
+              entity_id: humidifier.uvlazhnitel
+              data:
+                mode: High
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F4A7'}} Увлажнитель переведён в режим работы High {{'\U00002197'}}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/bedroom/humidifier_auto'' }}'
+          sequence:
+            - service: humidifier.set_mode
+              entity_id: humidifier.uvlazhnitel
+              data:
+                mode: Auto
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F4A7'}} Увлажнитель переведён в режим работы Auto {{'\U0001F170'}}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/menu_back_bedroom'' }}'
+          sequence:
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: telegram_bot.send_message
+              data: *telegram_menu_bedroom
+- id: Меню управления детской
+  alias: telegram_menu_nursery
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data: {}
+  action:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/protection_nursery_toggle'' }}'
+          sequence:
+            - service: mqtt.publish
+              data_template:
+                topic: 'protection/nursery'
+                payload_template: "{%- if is_state('binary_sensor.protection_nursery', 'on') -%} off {%- else -%} on {%- endif -%}"
+                retain: true
+            - delay:
+                seconds: 2
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F6A8'}} Охрана детской {% if is_state('binary_sensor.protection_nursery', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: notify.wonderland
+              data:
+                message: |
+                  {{'\U0001F6A8'}} Охрана детской {% if is_state('binary_sensor.protection_nursery', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+- id: Возврат в главное меню
+  alias: telegram_back_to_menu_start
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data: {}
+  action:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/menu_back'' }}'
+          sequence:
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+            - service: telegram_bot.send_message
+              data: *telegram_menu
+- id: Оповещение, что HA был перезагружен
+  alias: alert_restart_ha
+  initial_state: true
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - service: notify.wonderland
+      data:
+        message: |
+          {{'\U0001F6A8'}} Home Assistant был перезагружен.
+          {{'\U000023F0'}} Система была запущена в {{ states('sensor.time_date') }}.
+- id: Оповещение, что была открыта/закрыта дверь в коридоре во время включенной охраны
+  alias: alert_open_corridor_door_when_protection_on
+  initial_state: true
+  condition:
+    or:
+      - condition: state
+        entity_id: binary_sensor.protection_corridor
+        state: "on"
+      - condition: state
+        entity_id: binary_sensor.protection_all
+        state: "on"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.corridor_door_contact_contact
+      to:
+  action:
+    - service: notify.wonderland
+      data:
+        message: |
+          {{'\U0001F6A8'}} {% if is_state('binary_sensor.corridor_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %} дверь в коридоре!
+- id: Оповещение, что была открыта/закрыта дверь в спальню во время включенной охраны
+  alias: alert_open_bedroom_door_when_protection_on
+  initial_state: true
+  condition:
+    or:
+      - condition: state
+        entity_id: binary_sensor.protection_bedroom
+        state: "on"
+      - condition: state
+        entity_id: binary_sensor.protection_all
+        state: "on"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bedroom_door_contact_contact
+      to:
+  action:
+    - service: notify.wonderland
+      data:
+        message: |
+          {{'\U0001F6A8'}} {% if is_state('binary_sensor.bedroom_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %} дверь в спальню!
+- id: Оповещение, что была открыта/закрыта дверь в детскую во время включенной охраны
+  alias: alert_open_nursery_door_when_protection_on
+  initial_state: true
+  condition:
+    or:
+      - condition: state
+        entity_id: binary_sensor.protection_nursery
+        state: "on"
+      - condition: state
+        entity_id: binary_sensor.protection_all
+        state: "on"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.nursery_door_contact_contact
+      to:
+  action:
+    - service: notify.wonderland
+      data:
+        message: |
+          {{'\U0001F6A8'}} {% if is_state('binary_sensor.nursery_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %} дверь в детскую!
+- id: Оповещение, что обнаружена протечка на кухне
+  alias: alert_leak_in_the_kitchen
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_battery_leak_water_leak
+      to: 'on'
+  action:
+    - service: notify.wonderland
+      data:
+        message: |
+          {{'\U0001F6A8'}} Обнаружена протечка на кухне! {{'\U0001F30A'}}
+- id: Оповещение, что обнаружена протечка в гостиной
+  alias: alert_leak_in_the_living_room
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.living_room_battery_leak_water_leak
+      to: 'on'
+  action:
+    - service: notify.wonderland
+      data:
+        message: |
+          {{'\U0001F6A8'}} Обнаружена протечка в гостиной! {{'\U0001F30A'}}

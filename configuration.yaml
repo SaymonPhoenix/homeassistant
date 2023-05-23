@@ -1,0 +1,70 @@
+homeassistant:
+  name: Wonderland
+  latitude: !secret homeassistant_latitude
+  longitude: !secret homeassistant_longitude
+  elevation: 185
+  unit_system: metric
+  time_zone: Europe/Moscow
+  packages: !include_dir_merge_named includes/packages
+http:
+  server_port: 80
+default_config:
+frontend:
+  themes: !include_dir_merge_named themes
+tts:
+  - platform: google_translate
+automation: !include_dir_merge_list includes/automations
+script: !include_dir_merge_named includes/scripts
+binary_sensor: !include_dir_merge_list includes/binary_sensors
+scene: !include scenes.yaml
+panel_custom:
+  - name: server_state
+    sidebar_title: 'Система'
+    sidebar_icon: mdi:server
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: 'hassio/system'
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
+#lovelace:
+#  mode: yaml
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_bot_api_key
+    allowed_chat_ids:
+      - !secret telegram_bot_allowed_chat_id_my
+      - !secret telegram_bot_allowed_chat_id_my_supergroup
+notify:
+  - name: wonderland
+    platform: telegram
+    chat_id: !secret telegram_bot_allowed_chat_id_my_supergroup
+sensor:
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+      - 'date_time_utc'
+      - 'date_time_iso'
+      - 'time_date'
+      - 'time_utc'
+      - 'beat'
+mqtt:
+  binary_sensor:
+    - name: protection_all
+      state_topic: 'protection/all'
+      payload_on: 'on'
+      payload_off: 'off'
+    - name: protection_corridor
+      state_topic: 'protection/corridor'
+      payload_on: 'on'
+      payload_off: 'off'
+    - name: protection_bedroom
+      state_topic: 'protection/bedroom'
+      payload_on: 'on'
+      payload_off: 'off'
+    - name: protection_nursery
+      state_topic: 'protection/nursery'
+      payload_on: 'on'
+      payload_off: 'off'

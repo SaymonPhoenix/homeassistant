@@ -1,0 +1,42 @@
+homeassistant: true
+mqtt:
+  server: !secret mqtt_server
+  user: !secret mqtt_user
+  password: !secret mqtt_password
+serial:
+  port: /dev/ttyACM0
+  adapter: ezsp
+frontend:
+  port: 8099
+devices:
+  '0x00158d0007e61a1c':
+    friendly_name: bedroom_door_contact
+  '0x00158d0007e63560':
+    friendly_name: corridor_door_contact
+  '0x00158d0007e7643a':
+    friendly_name: nursery_door_contact
+  '0x00158d0002375b8f':
+    friendly_name: kitchen_battery_leak
+  '0x00158d00024a5c26':
+    friendly_name: living_room_battery_leak
+  '0x5c0272fffe037991':
+    friendly_name: bedroom_temperature_humidity_luminosity
+  '0x60a423fffeff6d33':
+    friendly_name: corridor_temperature_humidity_luminosity
+advanced:
+  log_syslog:
+    app_name: Zigbee2MQTT
+    eol: /n
+    host: localhost
+    localhost: localhost
+    path: /dev/log
+    pid: process.pid
+    port: 514
+    protocol: udp4
+    type: '5424'
+  transmit_power: 20
+  homeassistant_legacy_entity_attributes: false
+  legacy_api: false
+  legacy_availability_payload: false
+device_options:
+  legacy: false
