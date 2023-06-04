@@ -23,6 +23,10 @@ devices:
     friendly_name: bedroom_temperature_humidity_luminosity
   '0x60a423fffeff6d33':
     friendly_name: corridor_temperature_humidity_luminosity
+  '0xa4c13840f35380a1':
+    friendly_name: bedroom_light_switch
+  '0x70ac08fffea67aa9':
+    friendly_name: bedroom_workplace_socket
 advanced:
   log_syslog:
     app_name: Zigbee2MQTT
