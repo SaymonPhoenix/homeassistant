@@ -27,6 +27,8 @@ devices:
     friendly_name: bedroom_light_switch
   '0x70ac08fffea67aa9':
     friendly_name: bedroom_workplace_socket
+  '0x54ef441000730fba':
+    friendly_name: kitchen_living_room_light_switch
 advanced:
   log_syslog:
     app_name: Zigbee2MQTT

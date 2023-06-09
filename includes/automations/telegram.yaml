@@ -22,7 +22,7 @@
           - '{{''\U0001F6CF''}} Спальня:/bedroom , {{''\U0001FA9F''}} Лоджия:/loggia'
           - '{{''\U0001F37C''}} Детская:/nursery , {{''\U0001F6C1''}} Ванна:/bathroom'
           - '{{''\U0001F6A8''}} Охрана квартиры - {% if is_state(''binary_sensor.protection_all'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/protection_toggle'
-          - '{{''\U0001F6AB''}} Убрать меню:/menu_hide , {{''\U0001F6D1''}} НЕ НАЖИМАТЬ:/do_not_press'
+          - '{{''\U0001F6AB''}} Убрать меню:/menu_hide'
 - id: Главное меню управления
   alias: telegram_menu
   initial_state: true
@@ -51,7 +51,7 @@
                            {{'\U00002600'}} {{ states('sensor.corridor_temperature_humidity_luminosity_illuminance_lux') }}lux
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ КОРИДОРОМ:*
                 inline_keyboard:
-                  - '{{''\U0001F6A8''}} Охрана коридора - {% if is_state(''binary_sensor.protection_corridor'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/protection_corridor_toggle'
+                  - '{{''\U0001F6A8''}} Охрана коридора - {% if is_state(''binary_sensor.protection_corridor'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/corridor/protection_toggle'
                   - '{{''\U000021A9''}} Вернуться назад:/menu_back'
         - conditions:
             - condition: template
@@ -84,6 +84,7 @@
                            {{'\U0001F4A6'}} {% if is_state('binary_sensor.kitchen_battery_leak_water_leak', 'on') -%} Мокро {%- else -%} Сухо {%- endif %}
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ КУХНЕЙ:*
                 inline_keyboard:
+                  - '{{''\U0001F4A1''}} Освещение - {% if is_state(''switch.kitchen_living_room_light_switch_left'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/kitchen/light_toggle'
                   - '{{''\U000021A9''}} Вернуться назад:/menu_back'
         - conditions:
             - condition: template
@@ -101,6 +102,7 @@
                            {{'\U0001F4A6'}} {% if is_state('binary_sensor.living_room_battery_leak_water_leak', 'on') -%} Мокро {%- else -%} Сухо {%- endif %}
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ ГОСТИНОЙ:*
                 inline_keyboard:
+                  - '{{''\U0001F4A1''}} Освещение - {% if is_state(''switch.kitchen_living_room_light_switch_right'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/living_room/light_toggle'
                   - '{{''\U000021A9''}} Вернуться назад:/menu_back'
         - conditions:
             - condition: template
@@ -116,13 +118,16 @@
                 message: |
                   {{'\U0001F39B'}} Датчики:
                            {{'\U0001F6AA'}} {% if is_state('binary_sensor.bedroom_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
+                           {{'\U0001F4A1'}} {% if is_state('switch.bedroom_light_switch_left', 'on') -%} Включен {%- else -%} Выключен {%- endif %}
                            {{'\U0001F321'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_temperature') }}°C
                            {{'\U0001F4A7'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_humidity') }}%
                            {{'\U00002600'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_illuminance_lux') }}lux
+                           {{'\U000026A1'}} {{ states('sensor.bedroom_workplace_socket_energy') }}W
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ СПАЛЬНЕЙ:*
                 inline_keyboard:
+                  - '{{''\U0001F4A1''}} Освещение - {% if is_state(''switch.bedroom_light_switch_left'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/light_toggle, {{''\U0001F50C''}} Розетка РМ - {% if is_state(''switch.bedroom_workplace_socket'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/sockets/workplace_toggle'
                   - '{{''\U0001F4A7''}} Увлажнитель:/bedroom/humidifier'
-                  - '{{''\U0001F6A8''}} Охрана спальни - {% if is_state(''binary_sensor.protection_bedroom'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/protection_bedroom_toggle'
+                  - '{{''\U0001F6A8''}} Охрана спальни - {% if is_state(''binary_sensor.protection_bedroom'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/protection_toggle'
                   - '{{''\U000021A9''}} Вернуться назад:/menu_back'
         - conditions:
             - condition: template
@@ -155,7 +160,7 @@
                            {{'\U0001F6AA'}} {% if is_state('binary_sensor.nursery_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ ДЕТСКОЙ:*
                 inline_keyboard:
-                  - '{{''\U0001F6A8''}} Охрана детской - {% if is_state(''binary_sensor.protection_nursery'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/protection_nursery_toggle'
+                  - '{{''\U0001F6A8''}} Охрана детской - {% if is_state(''binary_sensor.protection_nursery'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/nursery/protection_toggle'
                   - '{{''\U000021A9''}} Вернуться назад:/menu_back'
         - conditions:
             - condition: template
@@ -204,18 +209,6 @@
               data_template:
                 message_id: '{{ trigger.event.data.message.message_id }}'
                 chat_id: '{{ trigger.event.data.chat_id }}'
-        - conditions:
-            - condition: template
-              value_template: '{{ trigger.event.data.command == ''/do_not_press'' }}'
-          sequence:
-            - service: telegram_bot.delete_message
-              data_template:
-                message_id: '{{ trigger.event.data.message.message_id }}'
-                chat_id: '{{ trigger.event.data.chat_id }}'
-            - service: telegram_bot.send_photo
-              data:
-                target: "{{ trigger.event.data.user_id }}"
-                url: 'https://www.meme-arsenal.com/memes/86c60fbd3c092bc6037c4febca84a236.jpg'
 - id: Меню управления коридором
   alias: telegram_menu_corridor
   initial_state: true
@@ -227,7 +220,7 @@
     - choose:
         - conditions:
             - condition: template
-              value_template: '{{ trigger.event.data.command == ''/protection_corridor_toggle'' }}'
+              value_template: '{{ trigger.event.data.command == ''/corridor/protection_toggle'' }}'
           sequence:
             - service: mqtt.publish
               data_template:
@@ -249,6 +242,60 @@
               data:
                 message: |
                   {{'\U0001F6A8'}} Охрана коридора {% if is_state('binary_sensor.protection_corridor', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+- id: Меню управления кухней
+  alias: telegram_menu_kitchen
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data: {}
+  action:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/kitchen/light_toggle'' }}'
+          sequence:
+            - service: switch.toggle
+              target:
+                entity_id: switch.kitchen_living_room_light_switch_left
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F4A1'}} Освещение {% if is_state('switch.kitchen_living_room_light_switch_left', 'on') %} включено {{'\U0001F7E2'}} {% else %} выключено {{'\U0001F534'}} {% endif %}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+- id: Меню управления гостиной
+  alias: telegram_menu_living_room
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data: {}
+  action:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/living_room/light_toggle'' }}'
+          sequence:
+            - service: switch.toggle
+              target:
+                entity_id: switch.kitchen_living_room_light_switch_right
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F4A1'}} Освещение {% if is_state('switch.kitchen_living_room_light_switch_right', 'on') %} включено {{'\U0001F7E2'}} {% else %} выключено {{'\U0001F534'}} {% endif %}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
 - id: Меню управления спальней
   alias: telegram_menu_bedroom
   initial_state: true
@@ -258,6 +305,42 @@
       event_data: {}
   action:
     - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/bedroom/light_toggle'' }}'
+          sequence:
+            - service: switch.toggle
+              target:
+                entity_id: switch.bedroom_light_switch_left
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F4A1'}} Освещение {% if is_state('switch.bedroom_light_switch_left', 'on') %} включено {{'\U0001F7E2'}} {% else %} выключено {{'\U0001F534'}} {% endif %}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/bedroom/sockets/workplace_toggle'' }}'
+          sequence:
+            - service: switch.toggle
+              target:
+                entity_id: switch.bedroom_workplace_socket
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F50C'}} Розетка рабочего места {% if is_state('switch.bedroom_workplace_socket', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
         - conditions:
             - condition: template
               value_template: '{{ trigger.event.data.command == ''/bedroom/humidifier'' }}'
@@ -280,7 +363,7 @@
                   - '{{''\U000021A9''}} Вернуться назад:/menu_back_bedroom'
         - conditions:
             - condition: template
-              value_template: '{{ trigger.event.data.command == ''/protection_bedroom_toggle'' }}'
+              value_template: '{{ trigger.event.data.command == ''/bedroom/protection_toggle'' }}'
           sequence:
             - service: mqtt.publish
               data_template:
@@ -425,7 +508,7 @@
     - choose:
         - conditions:
             - condition: template
-              value_template: '{{ trigger.event.data.command == ''/protection_nursery_toggle'' }}'
+              value_template: '{{ trigger.event.data.command == ''/nursery/protection_toggle'' }}'
           sequence:
             - service: mqtt.publish
               data_template:
@@ -466,99 +549,3 @@
                 chat_id: '{{ trigger.event.data.chat_id }}'
             - service: telegram_bot.send_message
               data: *telegram_menu
-- id: Оповещение, что HA был перезагружен
-  alias: alert_restart_ha
-  initial_state: true
-  trigger:
-    - platform: homeassistant
-      event: start
-  action:
-    - service: notify.wonderland
-      data:
-        message: |
-          {{'\U0001F6A8'}} Home Assistant был перезагружен.
-          {{'\U000023F0'}} Система была запущена в {{ states('sensor.time_date') }}.
-- id: Оповещение, что была открыта/закрыта дверь в коридоре во время включенной охраны
-  alias: alert_open_corridor_door_when_protection_on
-  initial_state: true
-  condition:
-    or:
-      - condition: state
-        entity_id: binary_sensor.protection_corridor
-        state: "on"
-      - condition: state
-        entity_id: binary_sensor.protection_all
-        state: "on"
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.corridor_door_contact_contact
-      to:
-  action:
-    - service: notify.wonderland
-      data:
-        message: |
-          {{'\U0001F6A8'}} {% if is_state('binary_sensor.corridor_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %} дверь в коридоре!
-- id: Оповещение, что была открыта/закрыта дверь в спальню во время включенной охраны
-  alias: alert_open_bedroom_door_when_protection_on
-  initial_state: true
-  condition:
-    or:
-      - condition: state
-        entity_id: binary_sensor.protection_bedroom
-        state: "on"
-      - condition: state
-        entity_id: binary_sensor.protection_all
-        state: "on"
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.bedroom_door_contact_contact
-      to:
-  action:
-    - service: notify.wonderland
-      data:
-        message: |
-          {{'\U0001F6A8'}} {% if is_state('binary_sensor.bedroom_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %} дверь в спальню!
-- id: Оповещение, что была открыта/закрыта дверь в детскую во время включенной охраны
-  alias: alert_open_nursery_door_when_protection_on
-  initial_state: true
-  condition:
-    or:
-      - condition: state
-        entity_id: binary_sensor.protection_nursery
-        state: "on"
-      - condition: state
-        entity_id: binary_sensor.protection_all
-        state: "on"
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.nursery_door_contact_contact
-      to:
-  action:
-    - service: notify.wonderland
-      data:
-        message: |
-          {{'\U0001F6A8'}} {% if is_state('binary_sensor.nursery_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %} дверь в детскую!
-- id: Оповещение, что обнаружена протечка на кухне
-  alias: alert_leak_in_the_kitchen
-  initial_state: true
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.kitchen_battery_leak_water_leak
-      to: 'on'
-  action:
-    - service: notify.wonderland
-      data:
-        message: |
-          {{'\U0001F6A8'}} Обнаружена протечка на кухне! {{'\U0001F30A'}}
-- id: Оповещение, что обнаружена протечка в гостиной
-  alias: alert_leak_in_the_living_room
-  initial_state: true
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.living_room_battery_leak_water_leak
-      to: 'on'
-  action:
-    - service: notify.wonderland
-      data:
-        message: |
-          {{'\U0001F6A8'}} Обнаружена протечка в гостиной! {{'\U0001F30A'}}

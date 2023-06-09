@@ -1,0 +1,12 @@
+- id: Оповещение, что HA был перезагружен
+  alias: telegram_restart_ha
+  initial_state: true
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - service: notify.wonderland
+      data:
+        message: |
+          {{'\U0001F6A8'}} Home Assistant был перезагружен.
+          {{'\U000023F0'}} Система была запущена в {{ states('sensor.time_date') }}.

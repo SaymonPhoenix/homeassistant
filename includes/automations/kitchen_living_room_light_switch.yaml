@@ -1,0 +1,68 @@
+- id: Включение света на кухне
+  alias: alice_kitchen_light_on
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: yandex_speaker
+      event_data:
+        value: Сделай громче на 0@+
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.kitchen_living_room_light_switch_left
+    - service: media_player.play_media
+      entity_id: media_player.yandex_station_m00c05d0073bzk
+      data:
+        media_content_id: Свет на кухне включен
+        media_content_type: text
+- id: Выключение света на кухне
+  alias: alice_kitchen_light_off
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: yandex_speaker
+      event_data:
+        value: Сделай громче на 0@-
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.kitchen_living_room_light_switch_left
+    - service: media_player.play_media
+      entity_id: media_player.yandex_station_m00c05d0073bzk
+      data:
+        media_content_id: Свет на кухне выключен
+        media_content_type: text
+- id: Включение света в гостиной
+  alias: alice_living_room_light_on
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: yandex_speaker
+      event_data:
+        value: Сделай громче на 0#+
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.kitchen_living_room_light_switch_right
+    - service: media_player.play_media
+      entity_id: media_player.yandex_station_m00c05d0073bzk
+      data:
+        media_content_id: Свет в гостиной включен
+        media_content_type: text
+- id: Выключение света в гостиной
+  alias: alice_living_room_light_off
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: yandex_speaker
+      event_data:
+        value: Сделай громче на 0#-
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.kitchen_living_room_light_switch_right
+    - service: media_player.play_media
+      entity_id: media_player.yandex_station_m00c05d0073bzk
+      data:
+        media_content_id: Свет в гостиной выключен
+        media_content_type: text

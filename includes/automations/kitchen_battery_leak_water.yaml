@@ -1,0 +1,12 @@
+- id: Оповещение, что обнаружена протечка на кухне
+  alias: alert_leak_in_the_kitchen
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_battery_leak_water_leak
+      to: 'on'
+  action:
+    - service: notify.wonderland
+      data:
+        message: |
+          {{'\U0001F6A8'}} Обнаружена протечка на кухне! {{'\U0001F30A'}}

@@ -1,0 +1,20 @@
+- id: Оповещение, что была открыта/закрыта дверь в спальню во время включенной охраны
+  alias: telegram_open_bedroom_door_when_protection_on
+  initial_state: true
+  condition:
+    or:
+      - condition: state
+        entity_id: binary_sensor.protection_bedroom
+        state: "on"
+      - condition: state
+        entity_id: binary_sensor.protection_all
+        state: "on"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bedroom_door_contact_contact
+      to:
+  action:
+    - service: notify.wonderland
+      data:
+        message: |
+          {{'\U0001F6A8'}} {% if is_state('binary_sensor.bedroom_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %} дверь в спальню!
