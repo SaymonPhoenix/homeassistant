@@ -1,34 +1,34 @@
-- id: Включение света в спальне
-  alias: alice_bedroom_light_on
+- id: Включение света в детской
+  alias: alice_nursery_light_on
   initial_state: true
   trigger:
     - platform: event
       event_type: yandex_speaker
       event_data:
-        value: Сделай громче на 0#+
+        value: Сделай громче на 0!+
   action:
     - service: switch.turn_on
       target:
-        entity_id: switch.bedroom_light_switch_left
+        entity_id: switch.nursery_light_switch_left
     - service: media_player.play_media
       entity_id: media_player.yandex_station_m00c05d0073bzk
       data:
-        media_content_id: Свет в спальне включен
+        media_content_id: Свет в детской включен
         media_content_type: text
-- id: Выключение света в спальне
-  alias: alice_bedroom_light_off
+- id: Выключение света в детской
+  alias: alice_nursery_light_off
   initial_state: true
   trigger:
     - platform: event
       event_type: yandex_speaker
       event_data:
-        value: Сделай громче на 0#-
+        value: Сделай громче на 0!-
   action:
     - service: switch.turn_off
       target:
-        entity_id: switch.bedroom_light_switch_left
+        entity_id: switch.nursery_light_switch_left
     - service: media_player.play_media
       entity_id: media_player.yandex_station_m00c05d0073bzk
       data:
-        media_content_id: Свет в спальне выключен
+        media_content_id: Свет в детской выключен
         media_content_type: text

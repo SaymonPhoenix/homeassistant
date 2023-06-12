@@ -5,7 +5,7 @@
     - platform: event
       event_type: yandex_speaker
       event_data:
-        value: Сделай громче на 0!?+
+        value: Сделай громче на 0#@+
   action:
     - service: switch.turn_on
       target:
@@ -22,7 +22,7 @@
     - platform: event
       event_type: yandex_speaker
       event_data:
-        value: Сделай громче на 0!?-
+        value: Сделай громче на 0#@-
   action:
     - service: switch.turn_off
       target:
