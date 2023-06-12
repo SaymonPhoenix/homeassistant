@@ -160,6 +160,7 @@
                            {{'\U0001F6AA'}} {% if is_state('binary_sensor.nursery_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ ДЕТСКОЙ:*
                 inline_keyboard:
+                  - '{{''\U0001F4A1''}} Освещение - {% if is_state(''switch.nursery_light_switch_left'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/nursery/light_toggle'
                   - '{{''\U0001F6A8''}} Охрана детской - {% if is_state(''binary_sensor.protection_nursery'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/nursery/protection_toggle'
                   - '{{''\U000021A9''}} Вернуться назад:/menu_back'
         - conditions:
@@ -506,6 +507,24 @@
       event_data: {}
   action:
     - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/nursery/light_toggle'' }}'
+          sequence:
+            - service: switch.toggle
+              target:
+                entity_id: switch.nursery_light_switch_left
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: "{{ trigger.event.data.id }}"
+                message: |
+                  {{'\U0001F4A1'}} Освещение {% if is_state('switch.nursery_light_switch_left', 'on') %} включено {{'\U0001F7E2'}} {% else %} выключено {{'\U0001F534'}} {% endif %}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
         - conditions:
             - condition: template
               value_template: '{{ trigger.event.data.command == ''/nursery/protection_toggle'' }}'
