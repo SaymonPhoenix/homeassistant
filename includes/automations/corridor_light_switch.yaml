@@ -1,0 +1,68 @@
+- id: Включение освещения в коридоре
+  alias: alice_corridor_light_on
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: yandex_speaker
+      event_data:
+        value: Сделай громче на 0&+
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.corridor_light_switch_right
+    - service: media_player.play_media
+      entity_id: media_player.yandex_station_m00c05d0073bzk
+      data:
+        media_content_id: Освещение в коридоре включено
+        media_content_type: text
+- id: Выключение освещения в коридоре
+  alias: alice_corridor_light_off
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: yandex_speaker
+      event_data:
+        value: Сделай громче на 0&-
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.corridor_light_switch_right
+    - service: media_player.play_media
+      entity_id: media_player.yandex_station_m00c05d0073bzk
+      data:
+        media_content_id: Освещение в коридоре выключено
+        media_content_type: text
+- id: Включение дополнительного освещения в коридоре
+  alias: alice_additional_corridor_light_on
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: yandex_speaker
+      event_data:
+        value: Сделай громче на 0&!+
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.corridor_light_switch_left
+    - service: media_player.play_media
+      entity_id: media_player.yandex_station_m00c05d0073bzk
+      data:
+        media_content_id: Дополнительное освещение в коридоре включено
+        media_content_type: text
+- id: Выключение дополнительного освещения в коридоре
+  alias: alice_additional_corridor_light_off
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: yandex_speaker
+      event_data:
+        value: Сделай громче на 0&!-
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.corridor_light_switch_left
+    - service: media_player.play_media
+      entity_id: media_player.yandex_station_m00c05d0073bzk
+      data:
+        media_content_id: Дополнительное освещение в коридоре выключено
+        media_content_type: text

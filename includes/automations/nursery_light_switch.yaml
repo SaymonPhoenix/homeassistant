@@ -1,4 +1,4 @@
-- id: Включение света в детской
+- id: Включение освещения в детской
   alias: alice_nursery_light_on
   initial_state: true
   trigger:
@@ -13,9 +13,9 @@
     - service: media_player.play_media
       entity_id: media_player.yandex_station_m00c05d0073bzk
       data:
-        media_content_id: Свет в детской включен
+        media_content_id: Освещение в детской включено
         media_content_type: text
-- id: Выключение света в детской
+- id: Выключение освещения в детской
   alias: alice_nursery_light_off
   initial_state: true
   trigger:
@@ -30,5 +30,5 @@
     - service: media_player.play_media
       entity_id: media_player.yandex_station_m00c05d0073bzk
       data:
-        media_content_id: Свет в детской выключен
+        media_content_id: Освещение в детской выключено
         media_content_type: text

@@ -1,4 +1,4 @@
-- id: Включение света в гостиной
+- id: Включение освещения в гостиной
   alias: alice_living_room_light_on
   initial_state: true
   trigger:
@@ -13,9 +13,9 @@
     - service: media_player.play_media
       entity_id: media_player.yandex_station_m00c05d0073bzk
       data:
-        media_content_id: Свет в гостиной включен
+        media_content_id: Освещение в гостиной включено
         media_content_type: text
-- id: Выключение света в гостиной
+- id: Выключение освещения в гостиной
   alias: alice_living_room_light_off
   initial_state: true
   trigger:
@@ -30,9 +30,9 @@
     - service: media_player.play_media
       entity_id: media_player.yandex_station_m00c05d0073bzk
       data:
-        media_content_id: Свет в гостиной выключен
+        media_content_id: Освещение в гостиной выключено
         media_content_type: text
-- id: Включение света на кухне
+- id: Включение освещения на кухне
   alias: alice_kitchen_light_on
   initial_state: true
   trigger:
@@ -47,9 +47,9 @@
     - service: media_player.play_media
       entity_id: media_player.yandex_station_m00c05d0073bzk
       data:
-        media_content_id: Свет на кухне включен
+        media_content_id: Освещение на кухне включено
         media_content_type: text
-- id: Выключение света на кухне
+- id: Выключение освещения на кухне
   alias: alice_kitchen_light_off
   initial_state: true
   trigger:
@@ -64,5 +64,5 @@
     - service: media_player.play_media
       entity_id: media_player.yandex_station_m00c05d0073bzk
       data:
-        media_content_id: Свет на кухне выключен
+        media_content_id: Освещение на кухне выключено
         media_content_type: text

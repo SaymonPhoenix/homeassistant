@@ -1,4 +1,4 @@
-- id: Включение света в спальне
+- id: Включение освещения в спальне
   alias: alice_bedroom_light_on
   initial_state: true
   trigger:
@@ -13,9 +13,9 @@
     - service: media_player.play_media
       entity_id: media_player.yandex_station_m00c05d0073bzk
       data:
-        media_content_id: Свет в спальне включен
+        media_content_id: Освещение в спальне включено
         media_content_type: text
-- id: Выключение света в спальне
+- id: Выключение освещения в спальне
   alias: alice_bedroom_light_off
   initial_state: true
   trigger:
@@ -30,5 +30,5 @@
     - service: media_player.play_media
       entity_id: media_player.yandex_station_m00c05d0073bzk
       data:
-        media_content_id: Свет в спальне выключен
+        media_content_id: Освещение в спальне выключено
         media_content_type: text

@@ -31,6 +31,12 @@ devices:
     friendly_name: nursery_light_switch
   '0xa4c138dec39710b0':
     friendly_name: kitchen_living_room_light_switch
+  '0xa4c138589d4a69cd':
+    friendly_name: corridor_light_switch
+  '0xa4c138670c2edf3d':
+    friendly_name: corridor_router_socket
+  '0xa4c1381a329c6212':
+    friendly_name: bedroom_tv_socket
 advanced:
   log_syslog:
     app_name: Zigbee2MQTT
