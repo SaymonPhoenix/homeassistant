@@ -1,5 +1,5 @@
-- id: Включение розетки рабочего места в спальне
-  alias: alice_bedroom_workplace_socket_on
+- id: Управление Алисой включением розетки рабочего места в спальне
+  alias: alice_control_bedroom_socket_workplace_on
   initial_state: true
   trigger:
     - platform: event
@@ -9,14 +9,15 @@
   action:
     - service: switch.turn_on
       target:
-        entity_id: switch.bedroom_workplace_socket
+        entity_id: switch.bedroom_socket_workplace
     - service: media_player.play_media
-      entity_id: media_player.yandex_station_m00c05d0073bzk
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
       data:
         media_content_id: Розетка рабочего места в спальне включена
         media_content_type: text
-- id: Выключение розетки рабочего места в спальне
-  alias: alice_bedroom_workplace_socket_off
+- id: Управление Алисой выключением розетки рабочего места в спальне
+  alias: alice_control_bedroom_socket_workplace_off
   initial_state: true
   trigger:
     - platform: event
@@ -26,9 +27,10 @@
   action:
     - service: switch.turn_off
       target:
-        entity_id: switch.bedroom_workplace_socket
+        entity_id: switch.bedroom_socket_workplace
     - service: media_player.play_media
-      entity_id: media_player.yandex_station_m00c05d0073bzk
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
       data:
         media_content_id: Розетка рабочего места в спальне выключена
         media_content_type: text

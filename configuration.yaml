@@ -74,4 +74,7 @@ yandex_station:
   devices:
     m00c05d0073bzk:
       host: 192.168.33.201
-      name: Яндекс Станция Mini
+      name: Яндекс Станция Mini в спальне
+    m00y5vh00h3kgk:
+      host: 192.168.33.202
+      name: Яндекс Станция Mini в коридоре

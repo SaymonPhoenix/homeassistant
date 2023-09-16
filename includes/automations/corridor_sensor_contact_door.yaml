@@ -1,14 +1,14 @@
-- id: Оповещение, что была открыта/закрыта дверь в коридоре во время включенной охраны
-  alias: telegram_open_corridor_door_when_protection_on
+- id: Оповещение telegram об открытии или закрытии двери в коридоре
+  alias: telegram_alarm_corridor_sensor_contact_door
   initial_state: true
   condition:
     or:
       - condition: state
         entity_id: binary_sensor.protection_corridor
-        state: "on"
+        state: 'on'
       - condition: state
         entity_id: binary_sensor.protection_all
-        state: "on"
+        state: 'on'
   trigger:
     - platform: state
       entity_id: binary_sensor.corridor_door_contact_contact

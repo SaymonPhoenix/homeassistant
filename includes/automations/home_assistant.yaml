@@ -1,5 +1,5 @@
-- id: Оповещение, что HA был перезагружен
-  alias: telegram_restart_ha
+- id: Оповещение telegram о перезагрузке HA
+  alias: telegram_alarm_home_assistant_restart
   initial_state: true
   trigger:
     - platform: homeassistant

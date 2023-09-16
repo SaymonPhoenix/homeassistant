@@ -1,5 +1,5 @@
-- id: Включение освещения в коридоре
-  alias: alice_corridor_light_on
+- id: Управление Алисой включением освещения в коридоре
+  alias: alice_control_corridor_light_switch_on
   initial_state: true
   trigger:
     - platform: event
@@ -9,14 +9,15 @@
   action:
     - service: switch.turn_on
       target:
-        entity_id: switch.corridor_light_switch_right
+        entity_id: switch.corridor_light_switch_left
     - service: media_player.play_media
-      entity_id: media_player.yandex_station_m00c05d0073bzk
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
       data:
         media_content_id: Освещение в коридоре включено
         media_content_type: text
-- id: Выключение освещения в коридоре
-  alias: alice_corridor_light_off
+- id: Управление Алисой выключением освещения в коридоре
+  alias: alice_control_corridor_light_switch_off
   initial_state: true
   trigger:
     - platform: event
@@ -26,14 +27,15 @@
   action:
     - service: switch.turn_off
       target:
-        entity_id: switch.corridor_light_switch_right
+        entity_id: switch.corridor_light_switch_left
     - service: media_player.play_media
-      entity_id: media_player.yandex_station_m00c05d0073bzk
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
       data:
         media_content_id: Освещение в коридоре выключено
         media_content_type: text
-- id: Включение дополнительного освещения в коридоре
-  alias: alice_additional_corridor_light_on
+- id: Управление Алисой включением дополнительного освещения в коридоре
+  alias: alice_control_corridor_light_switch_additional_on
   initial_state: true
   trigger:
     - platform: event
@@ -43,14 +45,15 @@
   action:
     - service: switch.turn_on
       target:
-        entity_id: switch.corridor_light_switch_left
+        entity_id: switch.corridor_light_switch_right
     - service: media_player.play_media
-      entity_id: media_player.yandex_station_m00c05d0073bzk
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
       data:
         media_content_id: Дополнительное освещение в коридоре включено
         media_content_type: text
-- id: Выключение дополнительного освещения в коридоре
-  alias: alice_additional_corridor_light_off
+- id: Управление Алисой выключением дополнительного освещения в коридоре
+  alias: alice_control_corridor_light_switch_additional_off
   initial_state: true
   trigger:
     - platform: event
@@ -60,9 +63,10 @@
   action:
     - service: switch.turn_off
       target:
-        entity_id: switch.corridor_light_switch_left
+        entity_id: switch.corridor_light_switch_right
     - service: media_player.play_media
-      entity_id: media_player.yandex_station_m00c05d0073bzk
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
       data:
         media_content_id: Дополнительное освещение в коридоре выключено
         media_content_type: text

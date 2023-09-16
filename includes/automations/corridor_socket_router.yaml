@@ -1,0 +1,36 @@
+- id: Управление Алисой включением розетки роутера в коридоре
+  alias: alice_control_corridor_socket_router_on
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: yandex_speaker
+      event_data:
+        value: Сделай громче на 0&@+
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.corridor_socket_router
+    - service: media_player.play_media
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
+      data:
+        media_content_id: Розетка роутера в коридоре включена
+        media_content_type: text
+- id: Управление Алисой выключением розетки роутера в коридоре
+  alias: alice_control_corridor_socket_router_off
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: yandex_speaker
+      event_data:
+        value: Сделай громче на 0&@-
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.corridor_socket_router
+    - service: media_player.play_media
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
+      data:
+        media_content_id: Розетка роутера в коридоре выключена
+        media_content_type: text

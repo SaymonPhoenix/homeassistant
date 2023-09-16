@@ -1,0 +1,12 @@
+- id: Оповещение telegram о протечке батареи отопления на кухне
+  alias: telegram_alarm_kitchen_sensor_water_radiator
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_battery_leak_water_leak
+      to: 'on'
+  action:
+    - service: notify.wonderland
+      data:
+        message: |
+          {{'\U0001F6A8'}} Обнаружена протечка радиатора на кухне! {{'\U0001F30A'}}

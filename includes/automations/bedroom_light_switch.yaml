@@ -1,5 +1,5 @@
-- id: Включение освещения в спальне
-  alias: alice_bedroom_light_on
+- id: Управление Алисой включением освещения в спальне
+  alias: alice_control_bedroom_light_switch_on
   initial_state: true
   trigger:
     - platform: event
@@ -11,12 +11,13 @@
       target:
         entity_id: switch.bedroom_light_switch_left
     - service: media_player.play_media
-      entity_id: media_player.yandex_station_m00c05d0073bzk
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
       data:
         media_content_id: Освещение в спальне включено
         media_content_type: text
-- id: Выключение освещения в спальне
-  alias: alice_bedroom_light_off
+- id: Управление Алисой выключением освещения в спальне
+  alias: alice_control_bedroom_light_switch_off
   initial_state: true
   trigger:
     - platform: event
@@ -28,7 +29,8 @@
       target:
         entity_id: switch.bedroom_light_switch_left
     - service: media_player.play_media
-      entity_id: media_player.yandex_station_m00c05d0073bzk
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
       data:
         media_content_id: Освещение в спальне выключено
         media_content_type: text

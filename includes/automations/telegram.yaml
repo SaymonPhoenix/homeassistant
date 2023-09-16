@@ -13,14 +13,14 @@
   action:
     - service: telegram_bot.send_message
       data: &telegram_menu
-        target: "{{ trigger.event.data.user_id }}"
+        target: '{{ trigger.event.data.user_id }}'
         message: |
           {{'\U0001F527'}} *ВЫБЕРИ ПОМЕЩЕНИЕ ДЛЯ УПРАВЛЕНИЯ:*
         inline_keyboard:
-          - '{{''\U0001F463''}} Коридор:/corridor , {{''\U0001F6BF''}} Душ:/shower'
+          - '{{''\U0001F463''}} Коридор:/corridor , {{''\U0001F6BF''}} Душевая:/shower'
           - '{{''\U0001F37D''}} Кухня:/kitchen , {{''\U0001F6CB''}} Гостиная:/living_room'
           - '{{''\U0001F6CF''}} Спальня:/bedroom , {{''\U0001FA9F''}} Лоджия:/loggia'
-          - '{{''\U0001F37C''}} Детская:/nursery , {{''\U0001F6C1''}} Ванна:/bathroom'
+          - '{{''\U0001F37C''}} Детская:/nursery , {{''\U0001F6C1''}} Ванная:/bathroom'
           - '{{''\U0001F6A8''}} Охрана квартиры - {% if is_state(''binary_sensor.protection_all'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/protection_toggle'
           - '{{''\U0001F6AB''}} Убрать меню:/menu_hide'
 - id: Главное меню управления
@@ -42,7 +42,7 @@
                 chat_id: '{{ trigger.event.data.chat_id }}'
             - service: telegram_bot.send_message
               data:
-                target: "{{ trigger.event.data.user_id }}"
+                target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F39B'}} Датчики:
                            {{'\U0001F6AA'}} {% if is_state('binary_sensor.nursery_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
@@ -61,7 +61,7 @@
                 chat_id: '{{ trigger.event.data.chat_id }}'
             - service: telegram_bot.send_message
               data:
-                target: "{{ trigger.event.data.user_id }}"
+                target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ ЛОДЖИЕЙ:*
                 inline_keyboard:
@@ -76,19 +76,18 @@
                 chat_id: '{{ trigger.event.data.chat_id }}'
             - service: telegram_bot.send_message
               data: &telegram_menu_bedroom
-                target: "{{ trigger.event.data.user_id }}"
+                target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F39B'}} Датчики:
                            {{'\U0001F6AA'}} {% if is_state('binary_sensor.bedroom_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
-                           {{'\U0001F4A1'}} {% if is_state('switch.bedroom_light_switch_left', 'on') -%} Включен {%- else -%} Выключен {%- endif %}
                            {{'\U0001F321'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_temperature') }}°C
                            {{'\U0001F4A7'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_humidity') }}%
                            {{'\U00002600'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_illuminance_lux') }}lux
-                           {{'\U000026A1'}} {{ (int(states('sensor.bedroom_workplace_socket_power')) + int(states('sensor.bedroom_tv_socket_power'))) / 1000 }}kWh
+                           {{'\U000026A1'}} {{ int(states('sensor.bedroom_socket_workplace_power')) + int(states('sensor.bedroom_tv_socket_power')) }}W
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ СПАЛЬНЕЙ:*
                 inline_keyboard:
                   - '{{''\U0001F4A1''}} Освещение - {% if is_state(''switch.bedroom_light_switch_left'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/light_toggle'
-                  - '{{''\U0001F50C''}} Розетка РМ - {% if is_state(''switch.bedroom_workplace_socket'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/sockets/workplace_toggle , {{''\U0001F50C''}} Розетка ТВ - {% if is_state(''switch.bedroom_tv_socket'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/sockets/tv_toggle'
+                  - '{{''\U0001F50C''}} Розетка РМ - {% if is_state(''switch.bedroom_socket_workplace'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/sockets/workplace_toggle , {{''\U0001F50C''}} Розетка ТВ - {% if is_state(''switch.bedroom_tv_socket'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/sockets/tv_toggle'
                   - '{{''\U0001F4A7''}} Увлажнитель:/bedroom/humidifier'
                   - '{{''\U0001F6A8''}} Охрана спальни - {% if is_state(''binary_sensor.protection_bedroom'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/protection_toggle'
                   - '{{''\U000021A9''}} Вернуться назад:/menu_back'
@@ -102,7 +101,7 @@
                 chat_id: '{{ trigger.event.data.chat_id }}'
             - service: telegram_bot.send_message
               data:
-                target: "{{ trigger.event.data.user_id }}"
+                target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F39B'}} Датчики:
                            {{'\U0001F4A6'}} {% if is_state('binary_sensor.living_room_battery_leak_water_leak', 'on') -%} Мокро {%- else -%} Сухо {%- endif %}
@@ -120,7 +119,7 @@
                 chat_id: '{{ trigger.event.data.chat_id }}'
             - service: telegram_bot.send_message
               data:
-                target: "{{ trigger.event.data.user_id }}"
+                target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F39B'}} Датчики:
                            {{'\U0001F4A6'}} {% if is_state('binary_sensor.kitchen_battery_leak_water_leak', 'on') -%} Мокро {%- else -%} Сухо {%- endif %}
@@ -138,7 +137,7 @@
                 chat_id: '{{ trigger.event.data.chat_id }}'
             - service: telegram_bot.send_message
               data:
-                target: "{{ trigger.event.data.user_id }}"
+                target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ ВАННОЙ:*
                 inline_keyboard:
@@ -153,18 +152,18 @@
                 chat_id: '{{ trigger.event.data.chat_id }}'
             - service: telegram_bot.send_message
               data:
-                target: "{{ trigger.event.data.user_id }}"
+                target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F39B'}} Датчики:
                            {{'\U0001F6AA'}} {% if is_state('binary_sensor.corridor_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
                            {{'\U0001F321'}} {{ states('sensor.corridor_temperature_humidity_luminosity_temperature') }}°C
                            {{'\U0001F4A7'}} {{ states('sensor.corridor_temperature_humidity_luminosity_humidity') }}%
                            {{'\U00002600'}} {{ states('sensor.corridor_temperature_humidity_luminosity_illuminance_lux') }}lux
-                           {{'\U000026A1'}} {{ int(states('sensor.corridor_router_socket_power')) / 1000 }}kWh
+                           {{'\U000026A1'}} {{ states('sensor.corridor_socket_router_power') }}W
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ КОРИДОРОМ:*
                 inline_keyboard:
                   - '{{''\U0001F4A1''}} Освещение - {% if is_state(''switch.corridor_light_switch_left'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/corridor/lights/toggle , {{''\U0001F4A1''}} Доп. освещение - {% if is_state(''switch.corridor_light_switch_right'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/corridor/lights/additional_toggle'
-                  - '{{''\U0001F50C''}} Розетка маршрутизатора - {% if is_state(''switch.corridor_router_socket'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/corridor/sockets/router_toggle'
+                  - '{{''\U0001F50C''}} Розетка маршрутизатора - {% if is_state(''switch.corridor_socket_router'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/corridor/sockets/router_toggle'
                   - '{{''\U0001F6A8''}} Охрана коридора - {% if is_state(''binary_sensor.protection_corridor'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/corridor/protection_toggle'
                   - '{{''\U000021A9''}} Вернуться назад:/menu_back'
         - conditions:
@@ -177,7 +176,7 @@
                 chat_id: '{{ trigger.event.data.chat_id }}'
             - service: telegram_bot.send_message
               data:
-                target: "{{ trigger.event.data.user_id }}"
+                target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ ДУШЕВОЙ:*
                 inline_keyboard:
@@ -195,7 +194,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F6A8'}} Охрана квартиры {% if is_state('binary_sensor.protection_all', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message
@@ -234,7 +233,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F4A1'}} Освещение {% if is_state('switch.nursery_light_switch_left', 'on') %} включено {{'\U0001F7E2'}} {% else %} выключено {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message
@@ -254,7 +253,7 @@
                 seconds: 2
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F6A8'}} Охрана детской {% if is_state('binary_sensor.protection_nursery', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message
@@ -285,7 +284,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F4A1'}} Освещение {% if is_state('switch.bedroom_light_switch_left', 'on') %} включено {{'\U0001F7E2'}} {% else %} выключено {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message
@@ -298,14 +297,14 @@
           sequence:
             - service: switch.toggle
               target:
-                entity_id: switch.bedroom_workplace_socket
+                entity_id: switch.bedroom_socket_workplace
             - delay:
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
-                  {{'\U0001F50C'}} Розетка рабочего места {% if is_state('switch.bedroom_workplace_socket', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+                  {{'\U0001F50C'}} Розетка рабочего места {% if is_state('switch.bedroom_socket_workplace', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message
               data_template:
                 message_id: '{{ trigger.event.data.message.message_id }}'
@@ -321,7 +320,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F50C'}} Розетка телевизора {% if is_state('switch.bedroom_tv_socket', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message
@@ -338,7 +337,7 @@
                 chat_id: '{{ trigger.event.data.chat_id }}'
             - service: telegram_bot.send_message
               data:
-                target: "{{ trigger.event.data.user_id }}"
+                target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F39B'}} Датчики:
                            {{'\U0001F6B0'}} Уровень воды - {{ states('sensor.uvlazhnitel_water_level') }}%
@@ -361,7 +360,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F6A8'}} Охрана спальни {% if is_state('binary_sensor.protection_bedroom', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message
@@ -391,7 +390,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F4A7'}} Увлажнитель {% if is_state('humidifier.uvlazhnitel', 'on') -%} включён {{'\U0001F7E2'}} {%- else -%} выключен {{'\U0001F534'}} {%- endif %}
             - service: telegram_bot.delete_message
@@ -410,7 +409,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F4A7'}} Увлажнитель переведён в режим работы Low {{'\U00002196'}}
             - service: telegram_bot.delete_message
@@ -429,7 +428,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F4A7'}} Увлажнитель переведён в режим работы Mid {{'\U00002B06'}}
             - service: telegram_bot.delete_message
@@ -448,7 +447,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F4A7'}} Увлажнитель переведён в режим работы High {{'\U00002197'}}
             - service: telegram_bot.delete_message
@@ -467,7 +466,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F4A7'}} Увлажнитель переведён в режим работы Auto {{'\U0001F170'}}
             - service: telegram_bot.delete_message
@@ -504,7 +503,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F4A1'}} Освещение {% if is_state('switch.kitchen_living_room_light_switch_right', 'on') %} включено {{'\U0001F7E2'}} {% else %} выключено {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message
@@ -531,7 +530,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F4A1'}} Освещение {% if is_state('switch.kitchen_living_room_light_switch_left', 'on') %} включено {{'\U0001F7E2'}} {% else %} выключено {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message
@@ -558,7 +557,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F4A1'}} Освещение {% if is_state('switch.corridor_light_switch_left', 'on') %} включено {{'\U0001F7E2'}} {% else %} выключено {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message
@@ -576,7 +575,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F4A1'}} Доп. освещение {% if is_state('switch.corridor_light_switch_right', 'on') %} включено {{'\U0001F7E2'}} {% else %} выключено {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message
@@ -589,14 +588,14 @@
           sequence:
             - service: switch.toggle
               target:
-                entity_id: switch.corridor_router_socket
+                entity_id: switch.corridor_socket_router
             - delay:
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
-                  {{'\U0001F50C'}} Розетка маршрутизатора {% if is_state('switch.corridor_router_socket', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+                  {{'\U0001F50C'}} Розетка маршрутизатора {% if is_state('switch.corridor_socket_router', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message
               data_template:
                 message_id: '{{ trigger.event.data.message.message_id }}'
@@ -614,7 +613,7 @@
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
-                callback_query_id: "{{ trigger.event.data.id }}"
+                callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
                   {{'\U0001F6A8'}} Охрана коридора {% if is_state('binary_sensor.protection_corridor', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message

@@ -1,5 +1,5 @@
-- id: Включение освещения в гостиной
-  alias: alice_living_room_light_on
+- id: Управление Алисой включением освещения в гостиной
+  alias: alice_control_living_room_light_switch_on
   initial_state: true
   trigger:
     - platform: event
@@ -11,12 +11,13 @@
       target:
         entity_id: switch.kitchen_living_room_light_switch_right
     - service: media_player.play_media
-      entity_id: media_player.yandex_station_m00c05d0073bzk
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
       data:
         media_content_id: Освещение в гостиной включено
         media_content_type: text
-- id: Выключение освещения в гостиной
-  alias: alice_living_room_light_off
+- id: Управление Алисой выключением освещения в гостиной
+  alias: alice_control_living_room_light_switch_off
   initial_state: true
   trigger:
     - platform: event
@@ -28,12 +29,13 @@
       target:
         entity_id: switch.kitchen_living_room_light_switch_right
     - service: media_player.play_media
-      entity_id: media_player.yandex_station_m00c05d0073bzk
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
       data:
         media_content_id: Освещение в гостиной выключено
         media_content_type: text
-- id: Включение освещения на кухне
-  alias: alice_kitchen_light_on
+- id: Управление Алисой включением освещения на кухне
+  alias: alice_control_kitchen_light_switch_on
   initial_state: true
   trigger:
     - platform: event
@@ -45,12 +47,13 @@
       target:
         entity_id: switch.kitchen_living_room_light_switch_left
     - service: media_player.play_media
-      entity_id: media_player.yandex_station_m00c05d0073bzk
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
       data:
         media_content_id: Освещение на кухне включено
         media_content_type: text
-- id: Выключение освещения на кухне
-  alias: alice_kitchen_light_off
+- id: Управление Алисой выключением освещения на кухне
+  alias: alice_control_kitchen_light_switch_off
   initial_state: true
   trigger:
     - platform: event
@@ -62,7 +65,8 @@
       target:
         entity_id: switch.kitchen_living_room_light_switch_left
     - service: media_player.play_media
-      entity_id: media_player.yandex_station_m00c05d0073bzk
+      target:
+        entity_id: '{{ trigger.event.data.entity_id }}'
       data:
         media_content_id: Освещение на кухне выключено
         media_content_type: text
