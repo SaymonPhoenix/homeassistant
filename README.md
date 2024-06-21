@@ -90,6 +90,49 @@ apt-get install -y git python3-pip
 ```
 Клонируем репозиторий с прошивками:
 ```bash
+git clone https://github.com/darkxst/silabs-firmware-builder.git
+```
+Устанавливаем утилиту для прошивки (https://github.com/NabuCasa/universal-silabs-flasher.git):
+```bash
+pip install universal-silabs-flasher
+```
+Переходим в директорию с заранее скомпилированными прошивками для нашего стика:
+```bash
+cd silabs-firmware-builder/firmware_builds/zbdonglee/
+```
+Проверяем на каком порту стик. В конце будет указано системное имя устройства (в моём случае ttyACM0):
+```bash
+ls -lah /dev/serial/by-path/ & ls -lah /dev/serial/by-id/
+```
+Прошиваем (не забываем остановить Zigbee2MQTT):
+```bash
+universal-silabs-flasher --device /dev/ttyACM0 flash --firmware ncp-uart-hw-v7.4.2.0-zbdonglee-115200.gbl
+```
+Добавляем в конфигурацию Zigbee2MQTT (zigbee2mqtt/configuration.yaml):
+```yaml
+serial:
+  adapter: ember
+```
+PS. Для перехода со сторонних (не официально рекомендованных разработчиком Zigbee2MQTT) при прошивке необходимо использовать ключ --allow-cross-flashing.
+    Для понижения версии при прошивке необходимо использовать ключ --allow-downgrades.
+
+---
+
+# УСТАРЕЛО!!! Обновление прошивки Zigbee стика SONOFF ZBDongle-E (на чипе EFR32MG21)
+Переходим под пользователя root:
+```bash
+sudo -i
+```
+Обновляем все пакеты ОС:
+```bash
+apt update && apt -y upgrade
+```
+Устанавливаем необходимые пакеты:
+```bash
+apt-get install -y git python3-pip
+```
+Клонируем репозиторий с прошивками:
+```bash
 git clone https://github.com/xsp1989/zigbeeFirmware.git
 ```
 Клонируем репозиторий с утилитой для прошивки:
