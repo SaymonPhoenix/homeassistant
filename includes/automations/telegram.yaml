@@ -45,7 +45,7 @@
                 target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F39B'}} Датчики:
-                           {{'\U0001F6AA'}} {% if is_state('binary_sensor.nursery_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
+                          {{'\U0001F6AA'}} {% if is_state('binary_sensor.nursery_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ ДЕТСКОЙ:*
                 inline_keyboard:
                   - '{{''\U0001F4A1''}} Освещение - {% if is_state(''switch.nursery_light_switch_left'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/nursery/light_toggle'
@@ -79,15 +79,15 @@
                 target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F39B'}} Датчики:
-                           {{'\U0001F6AA'}} {% if is_state('binary_sensor.bedroom_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
-                           {{'\U0001F321'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_temperature') }}°C
-                           {{'\U0001F4A7'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_humidity') }}%
-                           {{'\U00002600'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_illuminance_lux') }}lux
-                           {{'\U000026A1'}} {{ int(states('sensor.bedroom_socket_workplace_power')) + int(states('sensor.bedroom_tv_socket_power')) }}W
+                          {{'\U0001F6AA'}} {% if is_state('binary_sensor.bedroom_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
+                          {{'\U0001F321'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_temperature') }}°C
+                          {{'\U0001F4A7'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_humidity') }}%
+                          {{'\U00002600'}} {{ states('sensor.bedroom_temperature_humidity_luminosity_illuminance_lux') }}lux
+                          {{'\U000026A1'}} {{ int(states('sensor.bedroom_socket_workplace_power')) + int(states('sensor.bedroom_socket_tv_power')) }}W
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ СПАЛЬНЕЙ:*
                 inline_keyboard:
                   - '{{''\U0001F4A1''}} Освещение - {% if is_state(''switch.bedroom_light_switch_left'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/light_toggle'
-                  - '{{''\U0001F50C''}} Розетка РМ - {% if is_state(''switch.bedroom_socket_workplace'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/sockets/workplace_toggle , {{''\U0001F50C''}} Розетка ТВ - {% if is_state(''switch.bedroom_tv_socket'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/sockets/tv_toggle'
+                  - '{{''\U0001F50C''}} Розетка РМ - {% if is_state(''switch.bedroom_socket_workplace'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/sockets/workplace_toggle , {{''\U0001F50C''}} Розетка ТВ - {% if is_state(''switch.bedroom_socket_tv'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/sockets/tv_toggle'
                   - '{{''\U0001F4A7''}} Увлажнитель:/bedroom/humidifier'
                   - '{{''\U0001F6A8''}} Охрана спальни - {% if is_state(''binary_sensor.protection_bedroom'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/protection_toggle'
                   - '{{''\U000021A9''}} Вернуться назад:/menu_back'
@@ -104,7 +104,7 @@
                 target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F39B'}} Датчики:
-                           {{'\U0001F4A6'}} {% if is_state('binary_sensor.living_room_battery_leak_water_leak', 'on') -%} Мокро {%- else -%} Сухо {%- endif %}
+                          {{'\U0001F4A6'}} {% if is_state('binary_sensor.living_room_battery_leak_water_leak', 'on') -%} Мокро {%- else -%} Сухо {%- endif %}
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ ГОСТИНОЙ:*
                 inline_keyboard:
                   - '{{''\U0001F4A1''}} Освещение - {% if is_state(''switch.kitchen_living_room_light_switch_right'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/living_room/light_toggle'
@@ -122,7 +122,7 @@
                 target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F39B'}} Датчики:
-                           {{'\U0001F4A6'}} {% if is_state('binary_sensor.kitchen_battery_leak_water_leak', 'on') -%} Мокро {%- else -%} Сухо {%- endif %}
+                          {{'\U0001F4A6'}} {% if is_state('binary_sensor.kitchen_battery_leak_water_leak', 'on') -%} Мокро {%- else -%} Сухо {%- endif %}
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ КУХНЕЙ:*
                 inline_keyboard:
                   - '{{''\U0001F4A1''}} Освещение - {% if is_state(''switch.kitchen_living_room_light_switch_left'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/kitchen/light_toggle'
@@ -141,6 +141,7 @@
                 message: |
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ ВАННОЙ:*
                 inline_keyboard:
+                  - '{{''\U0001F4A1''}} Освещение - {% if is_state(''switch.bathroom_light_switch'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bathroom/light_toggle'
                   - '{{''\U000021A9''}} Вернуться назад:/menu_back'
         - conditions:
             - condition: template
@@ -155,11 +156,11 @@
                 target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F39B'}} Датчики:
-                           {{'\U0001F6AA'}} {% if is_state('binary_sensor.corridor_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
-                           {{'\U0001F321'}} {{ states('sensor.corridor_temperature_humidity_luminosity_temperature') }}°C
-                           {{'\U0001F4A7'}} {{ states('sensor.corridor_temperature_humidity_luminosity_humidity') }}%
-                           {{'\U00002600'}} {{ states('sensor.corridor_temperature_humidity_luminosity_illuminance_lux') }}lux
-                           {{'\U000026A1'}} {{ states('sensor.corridor_socket_router_power') }}W
+                          {{'\U0001F6AA'}} {% if is_state('binary_sensor.corridor_door_contact_contact', 'on') -%} Открыта {%- else -%} Закрыта {%- endif %}
+                          {{'\U0001F321'}} {{ states('sensor.corridor_temperature_humidity_luminosity_temperature') }}°C
+                          {{'\U0001F4A7'}} {{ states('sensor.corridor_temperature_humidity_luminosity_humidity') }}%
+                          {{'\U00002600'}} {{ states('sensor.corridor_temperature_humidity_luminosity_illuminance_lux') }}lux
+                          {{'\U000026A1'}} {{ states('sensor.corridor_socket_router_power') }}W
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ КОРИДОРОМ:*
                 inline_keyboard:
                   - '{{''\U0001F4A1''}} Освещение - {% if is_state(''switch.corridor_light_switch_left'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/corridor/lights/toggle , {{''\U0001F4A1''}} Доп. освещение - {% if is_state(''switch.corridor_light_switch_right'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/corridor/lights/additional_toggle'
@@ -180,6 +181,7 @@
                 message: |
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ ДУШЕВОЙ:*
                 inline_keyboard:
+                  - '{{''\U0001F4A1''}} Освещение - {% if is_state(''switch.shower_light_switch'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/shower/light_toggle'
                   - '{{''\U000021A9''}} Вернуться назад:/menu_back'
         - conditions:
             - condition: template
@@ -315,14 +317,14 @@
           sequence:
             - service: switch.toggle
               target:
-                entity_id: switch.bedroom_tv_socket
+                entity_id: switch.bedroom_socket_tv
             - delay:
                 seconds: 1
             - service: telegram_bot.answer_callback_query
               data:
                 callback_query_id: '{{ trigger.event.data.id }}'
                 message: |
-                  {{'\U0001F50C'}} Розетка телевизора {% if is_state('switch.bedroom_tv_socket', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+                  {{'\U0001F50C'}} Розетка телевизора {% if is_state('switch.bedroom_socket_tv', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
             - service: telegram_bot.delete_message
               data_template:
                 message_id: '{{ trigger.event.data.message.message_id }}'
@@ -340,8 +342,8 @@
                 target: '{{ trigger.event.data.user_id }}'
                 message: |
                   {{'\U0001F39B'}} Датчики:
-                           {{'\U0001F6B0'}} Уровень воды - {{ states('sensor.uvlazhnitel_water_level') }}%
-                           {{'\U0001F4A8'}} Выбранный режим работы - {{ state_attr('humidifier.uvlazhnitel', 'mode') }}
+                          {{'\U0001F6B0'}} Уровень воды - {{ states('sensor.uvlazhnitel_water_level') }}%
+                          {{'\U0001F4A8'}} Выбранный режим работы - {{ state_attr('humidifier.uvlazhnitel', 'mode') }}
                   {{'\U0001F527'}} *УПРАВЛЕНИЕ УВЛАЖНИТЕЛЕМ ВОЗДУХА:*
                 inline_keyboard:
                   - '{{''\U0001F4A7''}} Увлажнитель - {% if is_state(''humidifier.uvlazhnitel'', ''on'') -%} {{''\U0001F7E2''}} {%- else -%} {{''\U0001F534''}} {%- endif %}:/bedroom/humidifier_toggle'
@@ -537,6 +539,33 @@
               data_template:
                 message_id: '{{ trigger.event.data.message.message_id }}'
                 chat_id: '{{ trigger.event.data.chat_id }}'
+- id: Меню управления ванной
+  alias: telegram_menu_bathroom
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data: {}
+  action:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/bathroom/light_toggle'' }}'
+          sequence:
+            - service: switch.toggle
+              target:
+                entity_id: switch.bathroom_light_switch
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: '{{ trigger.event.data.id }}'
+                message: |
+                  {{'\U0001F4A1'}} Освещение {% if is_state('switch.bathroom_light_switch', 'on') %} включено {{'\U0001F7E2'}} {% else %} выключено {{'\U0001F534'}} {% endif %}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
 - id: Меню управления коридором
   alias: telegram_menu_corridor
   initial_state: true
@@ -624,6 +653,33 @@
               data:
                 message: |
                   {{'\U0001F6A8'}} Охрана коридора {% if is_state('binary_sensor.protection_corridor', 'on') %} включена {{'\U0001F7E2'}} {% else %} выключена {{'\U0001F534'}} {% endif %}
+- id: Меню управления душевой
+  alias: telegram_menu_shower
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data: {}
+  action:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ trigger.event.data.command == ''/shower/light_toggle'' }}'
+          sequence:
+            - service: switch.toggle
+              target:
+                entity_id: switch.shower_light_switch
+            - delay:
+                seconds: 1
+            - service: telegram_bot.answer_callback_query
+              data:
+                callback_query_id: '{{ trigger.event.data.id }}'
+                message: |
+                  {{'\U0001F4A1'}} Освещение {% if is_state('switch.shower_light_switch', 'on') %} включено {{'\U0001F7E2'}} {% else %} выключено {{'\U0001F534'}} {% endif %}
+            - service: telegram_bot.delete_message
+              data_template:
+                message_id: '{{ trigger.event.data.message.message_id }}'
+                chat_id: '{{ trigger.event.data.chat_id }}'
 - id: Возврат в главное меню
   alias: telegram_back_to_menu_start
   initial_state: true

@@ -51,7 +51,6 @@ sensor:
       - 'date_time_iso'
       - 'time_date'
       - 'time_utc'
-      - 'beat'
 mqtt:
   binary_sensor:
     - name: protection_all
@@ -78,3 +77,12 @@ yandex_station:
     m00y5vh00h3kgk:
       host: 192.168.33.202
       name: Яндекс Станция Mini в коридоре
+    m00b8vh00vw5zk:
+      host: 192.168.33.203
+      name: Яндекс Станция Mini на кухне
+    m0066rn00fyykk:
+      host: 192.168.33.204
+      name: Яндекс Станция Mini в ванной
+    m00ke6k00m75rk:
+      host: 192.168.33.205
+      name: Яндекс Станция Mini в детской
